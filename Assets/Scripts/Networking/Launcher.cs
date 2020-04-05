@@ -36,8 +36,10 @@ namespace PerigonGames
 
         void Start()
         {
-            Connect();
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
         }
+
 
         #endregion
 
@@ -45,6 +47,8 @@ namespace PerigonGames
 
         public void Connect()
         {
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
             if (PhotonNetwork.IsConnected)
             {
                 PhotonNetwork.JoinRandomRoom();
@@ -55,6 +59,14 @@ namespace PerigonGames
                 PhotonNetwork.GameVersion = m_gameVersion;
             }
         }
+
+        [Tooltip("The UI Panel to let the user enter name, connect and play")]
+        [SerializeField]
+        private GameObject controlPanel;
+        [Tooltip("The UI Label to inform the user that the connection is in progress")]
+        [SerializeField]
+        private GameObject progressLabel;
+
 
         #region MonoBehaviourPunCallbacks
 
@@ -74,6 +86,8 @@ namespace PerigonGames
         /// <param name="cause"></param>
         public override void OnDisconnected(DisconnectCause cause)
         {
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
