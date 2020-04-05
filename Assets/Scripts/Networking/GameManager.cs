@@ -31,5 +31,46 @@ namespace PerigonGames
         }
 
         #endregion
+
+        #region Private Methods
+
+        private void LoadArena()
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                Debug.LogError("PhotonNetwork: Trying to load a level but we are not th emaster client");
+            }
+            Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
+            PhotonNetwork.LoadLevel("Roomfor" + PhotonNetwork.CurrentRoom.PlayerCount);
+        }
+
+        #endregion
+
+        #region Photon Callbacks
+        public override void OnPlayerEnteredRoom(Player other)
+        {
+            Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName);
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient);
+
+                LoadArena();
+            }
+        }
+
+        public override void OnPlayerLeftRoom(Player other)
+        {
+            Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName);
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient);
+
+                LoadArena();
+            }
+        }
+
+        #endregion
     }
 }

@@ -783,6 +783,13 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 996843593322324744, guid: b2679c15f4ab7fb4287c92d337ad4c4a,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Leave Button
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 4811683938468250951, guid: b2679c15f4ab7fb4287c92d337ad4c4a,
         type: 3}
       propertyPath: m_Name
