@@ -22,9 +22,6 @@ namespace PerigonGames
 
         #region MonoBehaviour Callbacks
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void Start()
         {
 
