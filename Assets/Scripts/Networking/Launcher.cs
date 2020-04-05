@@ -64,10 +64,10 @@ namespace PerigonGames
 
         [Tooltip("The UI Panel to let the user enter name, connect and play")]
         [SerializeField]
-        private GameObject controlPanel;
+        private GameObject controlPanel = null;
         [Tooltip("The UI Label to inform the user that the connection is in progress")]
         [SerializeField]
-        private GameObject progressLabel;
+        private GameObject progressLabel = null;
 
 
         #region MonoBehaviourPunCallbacks
