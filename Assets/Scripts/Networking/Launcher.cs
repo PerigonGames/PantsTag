@@ -23,6 +23,8 @@ namespace PerigonGames
         /// </summary>
         private string m_gameVersion = "1";
 
+        private bool m_isConnecting = false;
+
         #endregion
 
         #region MonoBehaviour CallBacks
@@ -36,8 +38,10 @@ namespace PerigonGames
 
         void Start()
         {
-            Connect();
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
         }
+
 
         #endregion
 
@@ -45,16 +49,26 @@ namespace PerigonGames
 
         public void Connect()
         {
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
             if (PhotonNetwork.IsConnected)
             {
                 PhotonNetwork.JoinRandomRoom();
             }
             else
             {
-                PhotonNetwork.ConnectUsingSettings();
+                m_isConnecting = PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = m_gameVersion;
             }
         }
+
+        [Tooltip("The UI Panel to let the user enter name, connect and play")]
+        [SerializeField]
+        private GameObject controlPanel = null;
+        [Tooltip("The UI Label to inform the user that the connection is in progress")]
+        [SerializeField]
+        private GameObject progressLabel = null;
+
 
         #region MonoBehaviourPunCallbacks
 
@@ -64,7 +78,12 @@ namespace PerigonGames
         public override void OnConnectedToMaster()
         {
             // Cool we connected to master, so let's join a random room. 
-            PhotonNetwork.JoinRandomRoom();
+            
+            if (m_isConnecting)
+            {
+                m_isConnecting = false;
+                PhotonNetwork.JoinRandomRoom();
+            }
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
         }
 
@@ -74,6 +93,9 @@ namespace PerigonGames
         /// <param name="cause"></param>
         public override void OnDisconnected(DisconnectCause cause)
         {
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
+            m_isConnecting = false;
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
@@ -87,7 +109,19 @@ namespace PerigonGames
 
         public override void OnJoinedRoom()
         {
-            Debug.Log("PUN basics tutorial?laucnher: OnjoinedRoom() called by PUN, now this client is in a room woot woot ");
+            PhotonNetwork.LoadLevel("RoomFor" + PhotonNetwork.CurrentRoom.PlayerCount);
+            /*if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                Debug.Log("We load the RoomFor1");
+
+                PhotonNetwork.LoadLevel("RoomFor" + PhotonNetwork.CurrentRoom.PlayerCount.ToString());
+            }
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                Debug.Log("We load the RoomFor1");
+
+                PhotonNetwork.LoadLevel("RoomFor2");
+            }*/
         }
 
         #endregion
